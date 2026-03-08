@@ -1,254 +1,678 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>똑바로쌤 | 보육일지 챗봇</title>
 
-<title>똑바로쌤 | 보육일지 챗봇</title>
+  <link rel="icon" type="image/png" href="ssam.png.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 
-<link rel="icon" type="image/png" href="ssam.png.png">
+  <style>
+    :root{
+      --bg: #f6f7f3;
+      --surface: #ffffff;
+      --surface-soft: #edf2e8;
+      --surface-soft-2: #e4ebdc;
+      --line: #dbe3d3;
+      --text: #243024;
+      --text-soft: #667066;
+      --primary: #6f896c;
+      --primary-dark: #5f755d;
+      --heading: #475845;
+      --shadow: 0 12px 30px rgba(32, 45, 32, 0.06);
+      --shadow-soft: 0 8px 20px rgba(32, 45, 32, 0.04);
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --max: 1120px;
+    }
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    *{
+      box-sizing: border-box;
+    }
 
-<style>
+    html{
+      scroll-behavior: smooth;
+    }
 
-body{
-margin:0;
-font-family:Pretendard, sans-serif;
-background:#F7F8F6;
-color:#222;
-line-height:1.6;
-}
+    body{
+      margin: 0;
+      font-family: Pretendard, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      word-break: keep-all;
+    }
 
-header{
-text-align:center;
-padding:60px 20px 30px 20px;
-}
+    img{
+      display: block;
+      max-width: 100%;
+    }
 
-.logo{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:12px;
-font-size:40px;
-font-weight:800;
-color:#4B5C49;
-}
+    a{
+      color: inherit;
+    }
 
-.logo img{
-width:60px;
-}
+    .wrap{
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
 
-.hero{
-text-align:center;
-padding:20px 20px 80px 20px;
-max-width:800px;
-margin:auto;
-}
+    header{
+      padding: 28px 0 10px;
+    }
 
-.hero h1{
-font-size:42px;
-margin-bottom:10px;
-}
+    .topbar{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.hero p{
-font-size:18px;
-color:#666;
-margin-bottom:20px;
-}
+    .brand{
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(8px);
+      border-radius: 999px;
+      box-shadow: var(--shadow-soft);
+    }
 
-.free{
-color:#b4482e;
-font-weight:600;
-margin-bottom:40px;
-}
+    .brand img{
+      width: 48px;
+      height: auto;
+    }
 
-.button{
-display:inline-block;
-background:#6C8C6E;
-color:white;
-padding:16px 40px;
-border-radius:12px;
-font-weight:600;
-text-decoration:none;
-transition:0.2s;
-}
+    .brand span{
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--heading);
+      letter-spacing: -0.02em;
+    }
 
-.button:hover{
-background:#5A755C;
-}
+    .hero{
+      padding: 28px 0 84px;
+    }
 
-.section{
-padding:100px 20px;
-max-width:1100px;
-margin:auto;
-}
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(248,250,246,0.96) 100%);
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      padding: 56px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-.section-title{
-text-align:center;
-font-size:32px;
-margin-bottom:60px;
-}
+    .hero-card::before{
+      content: "";
+      position: absolute;
+      top: -140px;
+      left: -80px;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(111,137,108,0.10) 0%, rgba(111,137,108,0) 70%);
+      pointer-events: none;
+    }
 
-.features{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:30px;
-}
+    .hero-card::after{
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -120px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(111,137,108,0.08) 0%, rgba(111,137,108,0) 70%);
+      pointer-events: none;
+    }
 
-.card{
-background:#E2EBDD;
-padding:35px;
-border-radius:14px;
-border:1px solid #D8E2D2;
-box-shadow:0 8px 20px rgba(0,0,0,0.03);
-transition:0.2s;
-}
+    .badge{
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      color: var(--heading);
+      font-weight: 600;
+      font-size: 14px;
+    }
 
-.card:hover{
-transform:translateY(-2px);
-}
+    .hero h1{
+      margin: 0;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      color: var(--heading);
+    }
 
-.card h3{
-margin-top:0;
-font-size:20px;
-color:#4B5C49;
-}
+    .hero-lead{
+      max-width: 760px;
+      margin: 18px auto 0;
+      font-size: 19px;
+      color: var(--text-soft);
+    }
 
-.cta{
-text-align:center;
-padding:120px 20px;
-background:#EEF4EA;
-border-top:1px solid #E2E8DE;
-border-bottom:1px solid #E2E8DE;
-}
+    .hero-free{
+      margin: 20px 0 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
 
-.cta h2{
-font-size:34px;
-margin-bottom:20px;
-}
+    .hero-actions{
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
 
-.footer{
-text-align:center;
-padding:40px;
-color:#777;
-font-size:14px;
-}
+    .button{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 220px;
+      padding: 16px 28px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+      box-shadow: var(--shadow-soft);
+    }
 
-</style>
+    .button-primary{
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .button-primary:hover{
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .button-secondary{
+      background: #fff;
+      color: var(--heading);
+      border: 1px solid var(--line);
+    }
+
+    .button-secondary:hover{
+      transform: translateY(-1px);
+      background: #fbfcfa;
+    }
+
+    section{
+      padding: 54px 0;
+    }
+
+    .section-head{
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .section-kicker{
+      display: inline-block;
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .section-title{
+      margin: 0;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.28;
+      letter-spacing: -0.03em;
+      color: var(--heading);
+    }
+
+    .section-desc{
+      max-width: 760px;
+      margin: 14px auto 0;
+      color: var(--text-soft);
+      font-size: 17px;
+    }
+
+    .grid-3{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .card{
+      background: var(--surface-soft-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card h3{
+      margin: 0 0 12px;
+      font-size: 21px;
+      color: var(--heading);
+      letter-spacing: -0.02em;
+    }
+
+    .card p{
+      margin: 0;
+      color: #526052;
+      font-size: 16px;
+    }
+
+    .example-shell{
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .example-top{
+      padding: 18px 22px;
+      background: #f9fbf7;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .example-label{
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .example-body{
+      padding: 28px 22px 30px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 22px;
+    }
+
+    .input-box,
+    .output-box{
+      border-radius: 20px;
+      padding: 22px;
+      border: 1px solid var(--line);
+    }
+
+    .input-box{
+      background: var(--surface-soft);
+    }
+
+    .output-box{
+      background: #fcfdfb;
+    }
+
+    .mini-title{
+      margin: 0 0 12px;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--heading);
+    }
+
+    .input-chip{
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      margin: 0 8px 8px 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--heading);
+    }
+
+    .output-tag{
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      color: var(--primary-dark);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .output-box p{
+      margin: 0;
+      color: #4d5b4d;
+      font-size: 16px;
+    }
+
+    .example-note{
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      color: #4c594c;
+      font-size: 16px;
+    }
+
+    .review-grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .review-card{
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stars{
+      margin-bottom: 14px;
+      color: #80967d;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+    }
+
+    .review-card p{
+      margin: 0;
+      color: #4c594c;
+      font-size: 16px;
+    }
+
+    .review-author{
+      margin-top: 16px;
+      color: #6b766b;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .cta{
+      padding: 28px 0 88px;
+    }
+
+    .cta-box{
+      background: linear-gradient(180deg, #edf2e8 0%, #e7eee0 100%);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: 44px 24px;
+      text-align: center;
+    }
+
+    .cta-box h2{
+      margin: 0;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.28;
+      color: var(--heading);
+      letter-spacing: -0.03em;
+    }
+
+    .cta-box p{
+      max-width: 740px;
+      margin: 14px auto 0;
+      color: #546254;
+      font-size: 17px;
+    }
+
+    .cta-meta{
+      margin-top: 16px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .cta-actions{
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    footer{
+      padding: 0 0 42px;
+      text-align: center;
+      color: #7a847a;
+      font-size: 14px;
+    }
+
+    @media (max-width: 960px){
+      .grid-3,
+      .review-grid,
+      .example-body{
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card{
+        padding: 44px 22px;
+      }
+    }
+
+    @media (max-width: 640px){
+      .wrap{
+        width: min(var(--max), calc(100% - 24px));
+      }
+
+      .brand span{
+        font-size: 24px;
+      }
+
+      .hero{
+        padding-top: 16px;
+      }
+
+      .card,
+      .review-card,
+      .input-box,
+      .output-box{
+        padding: 22px;
+      }
+
+      .section{
+        padding: 46px 0;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">
+          <img src="ssam.png.png" alt="똑바로쌤 로고">
+          <span>똑바로쌤</span>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<div class="logo">
-<img src="ssam.png.png">
-똑바로쌤
-</div>
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-card">
+          <div class="badge">0세 · 1세 · 2세 영아용 보육일지 챗봇</div>
+          <h1>보육일지, 이제<br>더 빠르고 더 단단하게</h1>
+          <p class="hero-lead">
+            어린이집 선생님의 선생님, 똑바로쌤이
+            나이와 놀이 주제만으로 보육일지를 자연스럽게 정리해드립니다.
+          </p>
+          <div class="hero-free">2026년 3월 한 달 무료 체험 가능</div>
 
-</header>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://chatgpt.com/g/g-69a79ab4e1dc8191a48ca400d4015832-ddogbarossaem-boyugilji-caesbos" target="_blank" rel="noopener noreferrer">
+              보육일지 챗봇 무료체험하기
+            </a>
+            <a class="button button-secondary" href="#example">
+              생성 예시 보기
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">보육 현장의 고민</div>
+          <h2 class="section-title">보육일지는 매일 필요한데,<br>기록 부담은 점점 커집니다</h2>
+        </div>
 
-<section class="hero">
+        <div class="grid-3">
+          <div class="card">
+            <h3>퇴근 후에도 남는 업무</h3>
+            <p>보육일지 작성 때문에 하루를 마무리한 뒤에도 다시 기록 업무를 붙잡게 됩니다.</p>
+          </div>
+          <div class="card">
+            <h3>매일 반복되는 문장 고민</h3>
+            <p>같은 놀이도 어떻게 표현할지, 어떤 문장으로 정리할지 매번 다시 고민하게 됩니다.</p>
+          </div>
+          <div class="card">
+            <h3>기록의 전문성까지 신경 써야 함</h3>
+            <p>놀이중심 보육, 표준보육과정, 관찰과 지원까지 함께 담아내려면 더 많은 시간이 필요합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<h1>보육일지, 이제 1분이면 끝</h1>
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">똑바로쌤의 방식</div>
+          <h2 class="section-title">현장 교사가 중요하게 보는 핵심을<br>보육일지에 함께 담습니다</h2>
+        </div>
 
-<p>
-어린이집 선생님의 선생님  
-똑바로쌤이 보육일지를 대신 작성합니다
-</p>
+        <div class="grid-3">
+          <div class="card">
+            <h3>표준보육과정 반영</h3>
+            <p>놀이중심 보육의 표준보육과정을 바탕으로 기록의 방향이 흐트러지지 않도록 도와줍니다.</p>
+          </div>
+          <div class="card">
+            <h3>영아 관찰 중심 기록</h3>
+            <p>영아의 행동, 반응, 상호작용을 중심으로 실제 현장에서 쓰기 좋은 문장 흐름을 만듭니다.</p>
+          </div>
+          <div class="card">
+            <h3>교사의 배움지원까지 정리</h3>
+            <p>놀이를 본 것에서 끝나지 않고, 교사가 어떻게 지원했는지까지 함께 담아 전문성을 높입니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="free">
-2026년 3월 한 달 무료 체험 가능합니다
-</div>
+    <section id="example">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">생성 예시</div>
+          <h2 class="section-title">입력은 간단하게,<br>결과는 현장감 있게</h2>
+          <p class="section-desc">
+            전체 결과를 모두 보여주기보다, 실제 생성되는 흐름을 이해할 수 있도록 핵심 일부만 예시로 보여드립니다.
+          </p>
+        </div>
 
-<a class="button" href="https://chatgpt.com/g/g-69a79ab4e1dc8191a48ca400d4015832-ddogbarossaem-boyugilji-caesbos" target="_blank">
-보육일지 챗봇 무료체험하기
-</a>
+        <div class="example-shell">
+          <div class="example-top">
+            <div class="example-label">보육일지 생성 예시</div>
+            <div class="example-label">결과 일부 미리보기</div>
+          </div>
 
-</section>
+          <div class="example-body">
+            <div class="input-box">
+              <p class="mini-title">입력</p>
+              <span class="input-chip">1세</span>
+              <span class="input-chip">선생님과</span>
+              <span class="input-chip">까꿍놀이를 해요</span>
+            </div>
 
+            <div class="output-box">
+              <p class="mini-title">AI 생성 결과 일부</p>
+              <div class="output-tag">배움지원</div>
+              <p>
+                영아가 교사의 행동을 바라보며 얼굴을 가리려 할 때 교사가 천천히 얼굴을 가렸다가 “까꿍” 하며 나타나는 모습을 시범 보였다.
+                영아가 “까” 소리를 내며 손을 내리자 교사가 “○○가 까꿍 했구나”라고 말하며 언어적 상호작용을 제공하였다.
+                영아가 교사의 얼굴을 가리려 손을 뻗자 손을 함께 움직이며 얼굴을 가렸다가 나타나는 동작을 해보도록 신체적 도움을 제공하였다.
+                영아가 교사 가까이 몸을 움직일 때 주변 공간을 살피며 부딪힘이 없도록 안전하게 중재하였다.
+              </p>
+            </div>
+          </div>
+        </div>
 
+        <div class="example-note">
+          놀이중심 보육의 표준보육과정을 기반으로
+          영아의 놀이 행동과 상호작용을 관찰하고
+          교사의 배움지원을 함께 반영한 보육일지가 자동으로 생성됩니다.
+        </div>
+      </div>
+    </section>
 
-<section class="section">
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">사용자 후기</div>
+          <h2 class="section-title">실제로 써본 선생님들의 반응</h2>
+        </div>
 
-<div class="section-title">
-보육일지 작성이 힘드셨나요?
-</div>
+        <div class="review-grid">
+          <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p>
+              “퇴근하고 집에 가서 보육일지 쓰는 시간이 많이 줄었어요.
+              활동만 입력하면 문장이 자연스럽게 정리돼서 편하게 쓰고 있어요.”
+            </p>
+            <div class="review-author">— 어린이집 교사 김○○</div>
+          </div>
 
-<div class="features">
+          <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p>
+              “보육일지 문장 때문에 매번 어떻게 써야 할지 고민했는데
+              주제만 입력하면 바로 작성돼서 부담이 많이 줄었어요.”
+            </p>
+            <div class="review-author">— 어린이집 교사 박○○</div>
+          </div>
 
-<div class="card">
-<h3>퇴근 후에도 남는 업무</h3>
-<p>보육일지 때문에 퇴근 시간이 늦어지는 일이 반복됩니다.</p>
-</div>
+          <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p>
+              “보육일지 챗봇인데 관찰일지에도 활용할 수 있어서 좋더라고요.
+              문장이 자연스럽게 나와서 그냥 조금만 수정해서 쓰고 있어요.”
+            </p>
+            <div class="review-author">— 어린이집 교사 이○○</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="card">
-<h3>매일 반복되는 문장 고민</h3>
-<p>아이 관찰 내용을 어떻게 표현할지 고민이 많습니다.</p>
-</div>
+    <section class="cta">
+      <div class="wrap">
+        <div class="cta-box">
+          <h2>지금 바로 무료로 체험해보세요</h2>
+          <p>
+            나이와 놀이 주제만 입력하면 보육일지가 자동으로 생성됩니다.
+            직접 눌러보고, 실제 결과 흐름을 바로 확인해보세요.
+          </p>
+          <div class="cta-meta">2026년 3월 한 달 무료 체험 가능</div>
 
-<div class="card">
-<h3>시간은 부족하고 업무는 많습니다</h3>
-<p>보육 + 행정 + 기록까지 모두 해야 합니다.</p>
-</div>
+          <div class="cta-actions">
+            <a class="button button-primary" href="https://chatgpt.com/g/g-69a79ab4e1dc8191a48ca400d4015832-ddogbarossaem-boyugilji-caesbos" target="_blank" rel="noopener noreferrer">
+              무료체험하기
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-</div>
-
-</section>
-
-
-
-<section class="section">
-
-<div class="section-title">
-똑바로쌤이 해결합니다
-</div>
-
-<div class="features">
-
-<div class="card">
-<h3>표준보육과정 연계 작성</h3>
-<p>활동 내용을 입력하면 표준보육과정 영역과 연계된 보육일지가 자동 생성됩니다.</p>
-</div>
-
-<div class="card">
-<h3>발달영역 기반 기록</h3>
-<p>0세, 1세, 2세 영아 발달영역을 반영한 보육일지를 작성합니다.</p>
-</div>
-
-<div class="card">
-<h3>관찰 중심 보육일지</h3>
-<p>아이의 행동과 반응을 기반으로 자연스러운 관찰 기록을 생성합니다.</p>
-</div>
-
-</div>
-
-</section>
-
-
-
-<section class="cta">
-
-<h2>지금 무료로 체험해보세요</h2>
-
-<p>나이와 활동 주제만 입력하면 보육일지가 자동으로 작성됩니다.</p>
-
-<br><br>
-
-<a class="button" href="https://chatgpt.com/g/g-69a79ab4e1dc8191a48ca400d4015832-ddogbarossaem-boyugilji-caesbos" target="_blank">
-무료 체험 시작하기
-</a>
-
-</section>
-
-
-<div class="footer">
-
-© 2026 ttokbarossam
-
-</div>
+  <footer>
+    © 2026 ttokbarossam
+  </footer>
 
 </body>
 </html>
